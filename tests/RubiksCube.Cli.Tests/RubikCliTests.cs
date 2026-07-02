@@ -28,6 +28,7 @@ public sealed class RubikCliTests
 
         Assert.Equal(0, exitCode);
         Assert.Contains("Valid: yes", output.ToString());
+        Assert.Contains("Solvable: yes", output.ToString());
     }
 
     [Fact]
