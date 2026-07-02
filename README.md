@@ -2,6 +2,8 @@
 
 Rubik's Cube solver and 2D Blazor visualizer written in .NET 10.
 
+![Rubik's Cube Solver screenshot](docs/screenshot.png)
+
 Current implementation status:
 
 - Solution skeleton with Core, Solver, CLI, Web, and test projects.
