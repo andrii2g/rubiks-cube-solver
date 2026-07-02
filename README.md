@@ -1,6 +1,6 @@
-# rubiks-cube-solver
+# Rubiks Cube Solver
 
-Rubik's Cube solver and 2D Blazor visualizer written in .NET 10.
+Rubik's Cube solver and 2D Blazor visualizer
 
 ![Rubik's Cube Solver screenshot](docs/screenshot.png)
 
