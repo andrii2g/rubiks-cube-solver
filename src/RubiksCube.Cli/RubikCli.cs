@@ -67,19 +67,19 @@ public static class RubikCli
             return Fail(error, "--state requires a value.");
         }
 
-        var result = CubeParser.ParseFaceletState(state);
-        output.WriteLine($"Valid: {(result.IsSuccess ? "yes" : "no")}");
-        output.WriteLine($"Solvable: {(result.IsSuccess ? "not checked" : "no")}");
+        var result = CubeValidator.ValidatePhysicalState(state);
+        output.WriteLine($"Valid: {(result.IsValid ? "yes" : "no")}");
+        output.WriteLine($"Solvable: {(result.IsValid ? "yes" : "no")}");
 
-        if (result.IsSuccess)
+        if (result.IsValid)
         {
             return 0;
         }
 
         output.WriteLine("Errors:");
-        foreach (var parseError in result.Errors)
+        foreach (var validationError in result.Errors)
         {
-            output.WriteLine($"- {parseError.Message}");
+            output.WriteLine($"- {validationError.Message}");
         }
 
         return 2;
