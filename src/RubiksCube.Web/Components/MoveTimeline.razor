@@ -1,0 +1,20 @@
+@using RubiksCube.Solver
+
+<div class="move-timeline">
+    @for (var i = 0; i < Steps.Count; i++)
+    {
+        var stepNumber = i + 1;
+        var step = Steps[i];
+        <button type="button"
+                class="timeline-move @(CurrentStepIndex == stepNumber ? "active" : "")"
+                @onclick="() => CurrentStepIndexChanged.InvokeAsync(stepNumber)">
+            @step.Move
+        </button>
+    }
+</div>
+
+@code {
+    [Parameter] public IReadOnlyList<SolveStep> Steps { get; set; } = Array.Empty<SolveStep>();
+    [Parameter] public int CurrentStepIndex { get; set; }
+    [Parameter] public EventCallback<int> CurrentStepIndexChanged { get; set; }
+}

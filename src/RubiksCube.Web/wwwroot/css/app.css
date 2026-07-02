@@ -105,6 +105,145 @@ code {
     color: #c02d76;
 }
 
+.solver-shell {
+    display: grid;
+    gap: 1rem;
+}
+
+.solver-toolbar {
+    display: grid;
+    gap: 0.75rem;
+    max-width: 64rem;
+}
+
+.mode-toggle,
+.command-row,
+.playback-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.solver-toolbar textarea {
+    width: 100%;
+    max-width: 56rem;
+    min-height: 5rem;
+    font-family: Consolas, monospace;
+}
+
+.command-row button,
+.playback-controls button,
+.timeline-move {
+    border: 1px solid #6b7280;
+    background: #f9fafb;
+    border-radius: 0.25rem;
+    padding: 0.35rem 0.7rem;
+}
+
+.command-row button:hover,
+.playback-controls button:hover,
+.timeline-move:hover {
+    background: #e5e7eb;
+}
+
+.command-row button:disabled,
+.playback-controls button:disabled {
+    opacity: 0.55;
+}
+
+.validation-message {
+    color: #b91c1c;
+    font-weight: 600;
+}
+
+.solver-workspace {
+    display: grid;
+    grid-template-columns: minmax(20rem, 36rem) minmax(16rem, 1fr);
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.cube-net {
+    display: grid;
+    grid-template-columns: repeat(4, 6rem);
+    grid-template-rows: repeat(3, 6rem);
+    gap: 0.75rem;
+    align-items: center;
+    justify-items: center;
+}
+
+.face-u { grid-column: 2; grid-row: 1; }
+.face-l { grid-column: 1; grid-row: 2; }
+.face-f { grid-column: 2; grid-row: 2; }
+.face-r { grid-column: 3; grid-row: 2; }
+.face-b { grid-column: 4; grid-row: 2; }
+.face-d { grid-column: 2; grid-row: 3; }
+
+.cube-face {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 0.2rem;
+    width: 6rem;
+    height: 6rem;
+}
+
+.cube-sticker {
+    border: 1px solid #1f2937;
+    border-radius: 0.25rem;
+    min-width: 1.5rem;
+    min-height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.75rem;
+}
+
+.sticker-u { background: #ffffff; color: #111827; }
+.sticker-r { background: #dc2626; color: #ffffff; }
+.sticker-f { background: #16a34a; color: #ffffff; }
+.sticker-d { background: #facc15; color: #111827; }
+.sticker-l { background: #f97316; color: #111827; }
+.sticker-b { background: #2563eb; color: #ffffff; }
+
+.cube-sticker.changed {
+    outline: 3px solid #111827;
+}
+
+.solution-panel {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.move-timeline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+
+.timeline-move.active {
+    background: #111827;
+    color: #ffffff;
+}
+
+@media (max-width: 900px) {
+    .solver-workspace {
+        grid-template-columns: 1fr;
+    }
+
+    .cube-net {
+        grid-template-columns: repeat(4, 4.5rem);
+        grid-template-rows: repeat(3, 4.5rem);
+    }
+
+    .cube-face {
+        width: 4.5rem;
+        height: 4.5rem;
+    }
+}
+
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
     color: var(--bs-secondary-color);
     text-align: end;

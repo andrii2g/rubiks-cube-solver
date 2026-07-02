@@ -1,0 +1,16 @@
+@using RubiksCube.Core
+
+<section class="cube-face" aria-label="@($"{Face} face")">
+    @for (var i = 0; i < Stickers.Count; i++)
+    {
+        var sticker = Stickers[i];
+        <CubeStickerView Value="@sticker.Value" IsChanged="@sticker.IsChanged" Index="@sticker.Index" />
+    }
+</section>
+
+@code {
+    [Parameter] public Face Face { get; set; }
+    [Parameter] public IReadOnlyList<StickerViewModel> Stickers { get; set; } = Array.Empty<StickerViewModel>();
+
+    public sealed record StickerViewModel(char Value, bool IsChanged, int Index);
+}

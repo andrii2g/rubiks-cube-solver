@@ -1,0 +1,31 @@
+@using RubiksCube.Core
+
+<div class="cube-net">
+    <div class="face-u"><CubeFaceView Face="Face.U" Stickers="@BuildStickers(Face.U)" /></div>
+    <div class="face-l"><CubeFaceView Face="Face.L" Stickers="@BuildStickers(Face.L)" /></div>
+    <div class="face-f"><CubeFaceView Face="Face.F" Stickers="@BuildStickers(Face.F)" /></div>
+    <div class="face-r"><CubeFaceView Face="Face.R" Stickers="@BuildStickers(Face.R)" /></div>
+    <div class="face-b"><CubeFaceView Face="Face.B" Stickers="@BuildStickers(Face.B)" /></div>
+    <div class="face-d"><CubeFaceView Face="Face.D" Stickers="@BuildStickers(Face.D)" /></div>
+</div>
+
+@code {
+    [Parameter] public Cube Cube { get; set; } = Cube.Solved;
+    [Parameter] public Cube? PreviousCube { get; set; }
+    [Parameter] public bool HighlightChanges { get; set; } = true;
+
+    private IReadOnlyList<CubeFaceView.StickerViewModel> BuildStickers(Face face)
+    {
+        var start = FaceletIndex.Start(face);
+        var stickers = new CubeFaceView.StickerViewModel[9];
+
+        for (var i = 0; i < stickers.Length; i++)
+        {
+            var index = start + i;
+            var isChanged = HighlightChanges && PreviousCube is not null && PreviousCube[index] != Cube[index];
+            stickers[i] = new CubeFaceView.StickerViewModel(Cube[index], isChanged, index);
+        }
+
+        return stickers;
+    }
+}

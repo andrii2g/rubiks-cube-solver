@@ -1,0 +1,11 @@
+<div class="@CssClass" title="@Title">@Value</div>
+
+@code {
+    [Parameter] public char Value { get; set; }
+    [Parameter] public bool IsChanged { get; set; }
+    [Parameter] public int Index { get; set; }
+
+    private string CssClass => $"cube-sticker sticker-{char.ToLowerInvariant(Value)}{(IsChanged ? " changed" : "")}";
+
+    private string Title => $"Sticker {Index}: {Value}";
+}

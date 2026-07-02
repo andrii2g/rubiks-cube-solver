@@ -1,0 +1,161 @@
+@page "/solver"
+@implements IDisposable
+@using RubiksCube.Core
+@using RubiksCube.Solver
+@using RubiksCube.Web.Models
+@using RubiksCube.Web.Services
+@inject SolverViewService SolverViewService
+
+<PageTitle>Rubik's Cube Solver</PageTitle>
+
+<main class="solver-shell">
+    <section class="solver-toolbar">
+        <div class="mode-toggle">
+            <label><input type="radio" checked="@(State.InputMode == InputMode.Scramble)" @onchange="() => SetMode(InputMode.Scramble)" /> Scramble</label>
+            <label><input type="radio" checked="@(State.InputMode == InputMode.State)" @onchange="() => SetMode(InputMode.State)" /> 54-state</label>
+        </div>
+
+        @if (State.InputMode == InputMode.Scramble)
+        {
+            <textarea @bind="State.ScrambleText" @bind:event="oninput" rows="3" spellcheck="false"></textarea>
+        }
+        else
+        {
+            <textarea @bind="State.StateText" @bind:event="oninput" rows="4" spellcheck="false"></textarea>
+        }
+
+        <div class="command-row">
+            <button type="button" @onclick="Apply">Apply</button>
+            <button type="button" @onclick="Solve">Solve</button>
+            <button type="button" @onclick="RandomScramble">Random</button>
+            <button type="button" @onclick="Reset">Reset</button>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(State.ErrorMessage))
+        {
+            <p class="validation-message">@State.ErrorMessage</p>
+        }
+    </section>
+
+    <section class="solver-workspace">
+        <CubeNetView Cube="@State.CurrentCube" PreviousCube="@State.PreviousCube" />
+
+        <aside class="solution-panel">
+            <div class="status-line">Status: @(State.SolveResult?.Status.ToString() ?? "Ready")</div>
+            <div class="status-line">Step: @State.CurrentStepIndex / @State.StepCount</div>
+            <PlaybackControls CurrentStepIndex="@State.CurrentStepIndex"
+                              StepCount="@State.StepCount"
+                              IsPlaying="@State.IsPlaying"
+                              OnStart="@Start"
+                              OnPrevious="@Previous"
+                              OnNext="@Next"
+                              OnEnd="@End"
+                              OnTogglePlay="@TogglePlay" />
+            <MoveTimeline Steps="@(State.SolveResult?.Steps ?? Array.Empty<SolveStep>())"
+                          CurrentStepIndex="@State.CurrentStepIndex"
+                          CurrentStepIndexChanged="@JumpToStep" />
+        </aside>
+    </section>
+</main>
+
+@code {
+    private readonly SolverPageState State = new();
+    private CancellationTokenSource? playbackCts;
+
+    protected override void OnInitialized()
+    {
+        SolverViewService.ApplyInput(State);
+    }
+
+    private void SetMode(InputMode mode)
+    {
+        CancelPlayback();
+        State.InputMode = mode;
+        SolverViewService.ApplyInput(State);
+    }
+
+    private void Apply()
+    {
+        CancelPlayback();
+        SolverViewService.ApplyInput(State);
+    }
+
+    private void Solve()
+    {
+        CancelPlayback();
+        SolverViewService.Solve(State);
+    }
+
+    private void RandomScramble()
+    {
+        CancelPlayback();
+        SolverViewService.SetRandomScramble(State);
+    }
+
+    private void Reset()
+    {
+        CancelPlayback();
+        State.InputMode = InputMode.Scramble;
+        State.ScrambleText = string.Empty;
+        State.StateText = Cube.SolvedState;
+        State.InitialCube = Cube.Solved;
+        State.SolveResult = null;
+        State.ErrorMessage = null;
+        State.CurrentStepIndex = 0;
+    }
+
+    private void Start() => State.CurrentStepIndex = 0;
+
+    private void Previous() => State.CurrentStepIndex = Math.Max(0, State.CurrentStepIndex - 1);
+
+    private void Next() => State.CurrentStepIndex = Math.Min(State.StepCount, State.CurrentStepIndex + 1);
+
+    private void End() => State.CurrentStepIndex = State.StepCount;
+
+    private Task JumpToStep(int index)
+    {
+        State.CurrentStepIndex = Math.Clamp(index, 0, State.StepCount);
+        return Task.CompletedTask;
+    }
+
+    private async Task TogglePlay()
+    {
+        if (State.IsPlaying)
+        {
+            CancelPlayback();
+            return;
+        }
+
+        playbackCts = new CancellationTokenSource();
+        State.IsPlaying = true;
+
+        try
+        {
+            while (State.CurrentStepIndex < State.StepCount && !playbackCts.Token.IsCancellationRequested)
+            {
+                await Task.Delay(500, playbackCts.Token);
+                State.CurrentStepIndex++;
+                await InvokeAsync(StateHasChanged);
+            }
+        }
+        catch (TaskCanceledException)
+        {
+        }
+        finally
+        {
+            State.IsPlaying = false;
+        }
+    }
+
+    private void CancelPlayback()
+    {
+        playbackCts?.Cancel();
+        State.IsPlaying = false;
+    }
+
+    public void Dispose()
+    {
+        playbackCts?.Cancel();
+        playbackCts?.Dispose();
+    }
+}

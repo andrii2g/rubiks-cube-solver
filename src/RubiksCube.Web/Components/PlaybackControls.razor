@@ -1,0 +1,18 @@
+<div class="playback-controls">
+    <button type="button" @onclick="OnStart" disabled="@(CurrentStepIndex == 0)">Start</button>
+    <button type="button" @onclick="OnPrevious" disabled="@(CurrentStepIndex == 0)">Prev</button>
+    <button type="button" @onclick="OnTogglePlay" disabled="@(StepCount == 0)">@(IsPlaying ? "Pause" : "Play")</button>
+    <button type="button" @onclick="OnNext" disabled="@(CurrentStepIndex >= StepCount)">Next</button>
+    <button type="button" @onclick="OnEnd" disabled="@(CurrentStepIndex >= StepCount)">End</button>
+</div>
+
+@code {
+    [Parameter] public int CurrentStepIndex { get; set; }
+    [Parameter] public int StepCount { get; set; }
+    [Parameter] public bool IsPlaying { get; set; }
+    [Parameter] public EventCallback OnStart { get; set; }
+    [Parameter] public EventCallback OnPrevious { get; set; }
+    [Parameter] public EventCallback OnNext { get; set; }
+    [Parameter] public EventCallback OnEnd { get; set; }
+    [Parameter] public EventCallback OnTogglePlay { get; set; }
+}
