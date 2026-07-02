@@ -12,10 +12,11 @@ Current implementation status:
 - Deterministic scramble generation.
 - Verified inverse-scramble solver.
 - CLI commands for solve, validate, random, visualize, and normalize.
+- Bounded verified 54-facelet state solver.
 - 2D Blazor cube-net visualizer with playback controls.
 - Unit tests for Core, Solver, and CLI behavior.
 
-Arbitrary unsolved 54-facelet state solving is not implemented yet. Valid unsolved state input is physically validated and then reported as `SolverUnavailable` until the two-phase solver is implemented and verified.
+Arbitrary unsolved 54-facelet state solving uses a bounded verified search by default. If no solution is found within the configured depth, the solver returns `MaxDepthExceeded` instead of presenting an unverified answer.
 
 ## Build
 
