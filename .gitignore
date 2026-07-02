@@ -3,3 +3,5 @@ bin/
 obj/
 TestResults/
 *.user
+.dotnet-home/
+web-run.log
