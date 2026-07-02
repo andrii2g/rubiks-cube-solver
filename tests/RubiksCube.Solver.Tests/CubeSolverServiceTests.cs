@@ -15,13 +15,15 @@ public sealed class CubeSolverServiceTests
     }
 
     [Fact]
-    public void Solve_ValidUnsolvedFaceletState_ReturnsSolverUnavailable()
+    public void Solve_ValidUnsolvedFaceletStateWithinDepth_ReturnsSolved()
     {
         var state = Cube.Solved.Apply(Move.R).ToFaceletString();
 
         var result = new CubeSolverService().Solve(new SolveRequest(SolveInputType.FaceletState, state));
 
-        Assert.Equal(SolveStatus.SolverUnavailable, result.Status);
+        Assert.Equal(SolveStatus.Solved, result.Status);
+        Assert.True(result.Verified);
+        Assert.Equal([Move.Ri], result.Moves);
     }
 
     [Fact]
@@ -41,5 +43,15 @@ public sealed class CubeSolverServiceTests
         var result = new CubeSolverService().Solve(new SolveRequest(SolveInputType.FaceletState, new string(facelets)));
 
         Assert.Equal(SolveStatus.NotSolvable, result.Status);
+    }
+
+    [Fact]
+    public void Solve_ValidStateBeyondMaxDepth_ReturnsMaxDepthExceeded()
+    {
+        var state = Cube.Solved.Apply(Move.R).Apply(Move.U).ToFaceletString();
+
+        var result = new CubeSolverService().Solve(new SolveRequest(SolveInputType.FaceletState, state, MaxDepth: 1));
+
+        Assert.Equal(SolveStatus.MaxDepthExceeded, result.Status);
     }
 }

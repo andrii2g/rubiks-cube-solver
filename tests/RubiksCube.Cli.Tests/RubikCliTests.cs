@@ -45,7 +45,7 @@ public sealed class RubikCliTests
     }
 
     [Fact]
-    public void SolveState_ForUnsolvedState_ReturnsSolverUnavailable()
+    public void SolveState_ForUnsolvedStateWithinDepth_ReturnsSolved()
     {
         using var output = new StringWriter();
         using var error = new StringWriter();
@@ -53,7 +53,8 @@ public sealed class RubikCliTests
 
         var exitCode = RubikCli.Run(["solve", "--state", state], output, error);
 
-        Assert.Equal(2, exitCode);
-        Assert.Contains("SolverUnavailable", output.ToString());
+        Assert.Equal(0, exitCode);
+        Assert.Contains("Solved", output.ToString());
+        Assert.Contains("Verified:   yes", output.ToString());
     }
 }
