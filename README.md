@@ -8,14 +8,14 @@ Current implementation status:
 - Immutable 54-facelet cube model.
 - MVP move parsing for `U R F D L B` with optional `'`, `i`, or `2` suffixes.
 - Generated sticker move tables from one coordinate mapping.
-- Sticker-level 54-facelet validation.
+- Sticker-level and cubie-level 54-facelet physical validation.
 - Deterministic scramble generation.
 - Verified inverse-scramble solver.
 - CLI commands for solve, validate, random, visualize, and normalize.
 - 2D Blazor cube-net visualizer with playback controls.
 - Unit tests for Core, Solver, and CLI behavior.
 
-Arbitrary 54-facelet state solving is not implemented yet. Until the two-phase solver is implemented and verified, state input is for parsing, validation, and visualization work only.
+Arbitrary unsolved 54-facelet state solving is not implemented yet. Valid unsolved state input is physically validated and then reported as `SolverUnavailable` until the two-phase solver is implemented and verified.
 
 ## Build
 
