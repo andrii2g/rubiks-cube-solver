@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/RubiksCube.Cli/RubiksCube.Cli.csproj" />
+    <Project Path="src/RubiksCube.Core/RubiksCube.Core.csproj" />
+    <Project Path="src/RubiksCube.Solver/RubiksCube.Solver.csproj" />
+    <Project Path="src/RubiksCube.Web/RubiksCube.Web.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/RubiksCube.Cli.Tests/RubiksCube.Cli.Tests.csproj" />
+    <Project Path="tests/RubiksCube.Core.Tests/RubiksCube.Core.Tests.csproj" />
+    <Project Path="tests/RubiksCube.Solver.Tests/RubiksCube.Solver.Tests.csproj" />
+    <Project Path="tests/RubiksCube.Web.Tests/RubiksCube.Web.Tests.csproj" />
+  </Folder>
+</Solution>
