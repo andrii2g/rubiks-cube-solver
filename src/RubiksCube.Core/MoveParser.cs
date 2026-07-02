@@ -95,7 +95,7 @@ public static class MoveParser
             "M" or "E" or "S" => $"Unsupported move token \"{token}\". Slice moves are not supported in MVP.",
             "x" or "y" or "z" => $"Unsupported move token \"{token}\". Cube rotations are not supported in MVP.",
             _ when token.EndsWith('w') => $"Unsupported move token \"{token}\". Wide moves are not supported in MVP.",
-            _ when token.Length == 1 && char.IsLowerInvariant(token[0]) =>
+            _ when token.Length == 1 && char.IsLower(token[0]) =>
                 $"Unsupported move token \"{token}\". Lowercase notation is not supported in MVP.",
             _ => $"Unsupported move token \"{token}\"."
         };
