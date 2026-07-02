@@ -65,5 +65,17 @@ public static class CubeValidator
         return errors.Count == 0 ? CubeValidationResult.Valid : new CubeValidationResult(errors);
     }
 
+    public static CubeValidationResult ValidatePhysicalState(string input)
+    {
+        var stickerValidation = ValidateStickerState(input);
+        if (!stickerValidation.IsValid)
+        {
+            return stickerValidation;
+        }
+
+        var cube = new Cube(RemoveWhitespace(input));
+        return CubieCubeParser.ValidatePhysicalState(cube);
+    }
+
     internal static string RemoveWhitespace(string input) => new(input.Where(value => !char.IsWhiteSpace(value)).ToArray());
 }
